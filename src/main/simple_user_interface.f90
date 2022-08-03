@@ -68,6 +68,7 @@ end type simple_program
 
 type(simple_program), target :: analysis2D_nano
 type(simple_program), target :: assign_optics_groups
+type(simple_program), target :: atomic_displacement
 type(simple_program), target :: automask
 type(simple_program), target :: autorefine3D_nano
 type(simple_program), target :: binarize
@@ -214,7 +215,7 @@ type(simple_input_param) :: lp_backgr
 type(simple_input_param) :: lp_lowres
 type(simple_input_param) :: lplim_crit
 type(simple_input_param) :: lpthresh
-type(simple_input_param) :: match_filt 
+type(simple_input_param) :: match_filt
 type(simple_input_param) :: max_dose
 type(simple_input_param) :: max_rad
 type(simple_input_param) :: maxits
@@ -319,6 +320,7 @@ contains
         call set_prg_ptr_array
         call new_analysis2D_nano
         call new_assign_optics_groups
+        call new_atomic_displacement
         call new_automask
         call new_autorefine3D_nano
         call new_binarize
@@ -426,6 +428,7 @@ contains
         n_prg_ptrs = 0
         call push2prg_ptr_array(analysis2D_nano)
         call push2prg_ptr_array(assign_optics_groups)
+        call push2prg_ptr_array(atomic_displacement)
         call push2prg_ptr_array(automask)
         call push2prg_ptr_array(autorefine3D_nano)
         call push2prg_ptr_array(binarize)
@@ -542,6 +545,8 @@ contains
                 ptr2prg => analysis2D_nano
             case('assign_optics_groups')
                 ptr2prg => assign_optics_groups
+            case('atomic_displacement')
+                ptr2prg => atomic_displacement
             case('automask')
                 ptr2prg => automask
             case('autorefine3D_nano')
@@ -835,6 +840,7 @@ contains
     end subroutine list_simple_prgs_in_ui
 
     subroutine list_single_prgs_in_ui
+        write(logfhandle,'(A)') atomic_displacement%name
         write(logfhandle,'(A)') format_str('PROJECT MANAGEMENT PROGRAMS:', C_UNDERLINED)
         write(logfhandle,'(A)') new_project%name
         write(logfhandle,'(A)') update_project%name
@@ -1123,6 +1129,28 @@ contains
         ! <empty>
         ! computer controls
     end subroutine new_assign_optics_groups
+
+    subroutine new_atomic_displacement
+        ! PROGRAM SPECIFICATION
+        call atomic_displacement%new(&
+        &'atomic_displacement', &                                               ! name
+        &'Derive atomic displacement parameters',&                     			! descr_short
+        &'is a program to derive atomic displacement parameters',& 				! descr long
+        &'single_exec',&                                                  		! executable
+        &0, 0, 0, 0, 0, 0, 0, .true.)                                           ! # entries in each group, requires sp_project
+        ! INPUT PARAMETER SPECIFICATIONS
+        ! image input/output
+        ! parameter input/output
+        ! alternative inputs
+        ! <empty>
+        ! search controls
+        ! <empty>
+        ! filter controls
+        ! <empty>
+        ! mask controls
+        ! <empty>
+        ! computer controls
+    end subroutine new_atomic_displacement
 
     subroutine new_automask
         ! PROGRAM SPECIFICATION
