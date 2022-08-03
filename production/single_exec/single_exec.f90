@@ -13,6 +13,7 @@ use simple_commander_cluster2D
 use simple_commander_tseries
 use simple_commander_oris
 use simple_commander_atoms
+use simple_commander_atomic_displacement
 implicit none
 #include "simple_local_flags.inc"
 
@@ -51,6 +52,7 @@ type(vizoris_commander)                       :: xvizoris
 type(detect_atoms_commander)                  :: xdetect_atoms
 type(atoms_stats_commander)                   :: xatoms_stats
 type(tseries_atoms_analysis_commander)        :: xtseries_atoms_analysis
+type(atomic_displacement_commander)           :: xatomic_displacement
 
 ! OTHER DECLARATIONS
 character(len=STDLEN) :: args, prg, entire_line
@@ -144,6 +146,8 @@ select case(prg)
         call xatoms_stats%execute(cline)
     case( 'tseries_atoms_analysis' )
         call xtseries_atoms_analysis%execute(cline)
+    case( 'atomic_displacement' )
+        call xatomic_displacement%execute(cline)
 
     ! UNSUPPORTED
     case DEFAULT

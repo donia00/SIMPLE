@@ -840,7 +840,6 @@ contains
     end subroutine list_simple_prgs_in_ui
 
     subroutine list_single_prgs_in_ui
-        write(logfhandle,'(A)') atomic_displacement%name
         write(logfhandle,'(A)') format_str('PROJECT MANAGEMENT PROGRAMS:', C_UNDERLINED)
         write(logfhandle,'(A)') new_project%name
         write(logfhandle,'(A)') update_project%name
@@ -876,6 +875,7 @@ contains
         write(logfhandle,'(A)') detect_atoms%name
         write(logfhandle,'(A)') atoms_stats%name
         write(logfhandle,'(A)') tseries_atoms_analysis%name
+        write(logfhandle,'(A)') atomic_displacement%name
     end subroutine list_single_prgs_in_ui
 
     ! private class methods
@@ -1137,19 +1137,25 @@ contains
         &'Derive atomic displacement parameters',&                     			! descr_short
         &'is a program to derive atomic displacement parameters',& 				! descr long
         &'single_exec',&                                                  		! executable
-        &0, 0, 0, 0, 0, 0, 0, .true.)                                           ! # entries in each group, requires sp_project
+        &1, 3, 0, 0, 0, 0, 1, .false.)                                          ! # entries in each group, requires sp_project
         ! INPUT PARAMETER SPECIFICATIONS
         ! image input/output
+        ! image input/output
+        call atomic_displacement%set_input('img_ios', 1, 'vol1', 'file', 'Volume', 'Nanoparticle volume to analyse', &
+        & 'input volume e.g. vol.mrc', .false., '')
         ! parameter input/output
+        call atomic_displacement%set_input('parm_ios',  1, smpd)
+        call atomic_displacement%set_input('parm_ios',  2, box)
+        call atomic_displacement%set_input('parm_ios',  3, element)
         ! alternative inputs
         ! <empty>
         ! search controls
         ! <empty>
         ! filter controls
-        ! <empty>
         ! mask controls
         ! <empty>
         ! computer controls
+        call simulate_atoms%set_input('comp_ctrls', 1, nthr)
     end subroutine new_atomic_displacement
 
     subroutine new_automask
