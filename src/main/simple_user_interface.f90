@@ -1155,8 +1155,9 @@ contains
         ! mask controls
         ! <empty>
         ! computer controls
-        call simulate_atoms%set_input('comp_ctrls', 1, nthr)
+        call atomic_displacement%set_input('comp_ctrls', 1, nthr)
     end subroutine new_atomic_displacement
+
 
     subroutine new_automask
         ! PROGRAM SPECIFICATION
